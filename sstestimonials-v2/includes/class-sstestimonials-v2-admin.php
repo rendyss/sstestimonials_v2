@@ -38,10 +38,7 @@ if ( ! class_exists( 'SSTestimonialsV2_Admin' ) ) {
 					wp_redirect( admin_url( 'admin.php?page=' . $this->pluginName ) );
 					exit;
 				} else {
-				    echo "<pre>";
-				    var_dump($delete);
-				    echo "</pre>";
-					wp_die();
+					wp_die($delete->message);
 				}
 			} else {
 				wp_die( 'Failed to delete testimonial' );
