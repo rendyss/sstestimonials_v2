@@ -42,9 +42,9 @@ if ( ! class_exists( 'SSTestimonialsV2_Widget' ) ) {
 			$ssTestimonialsIO = new SSTestimonialsV2_IO();
 			$random_testi     = $ssTestimonialsIO->get_random();
 			if ( $random_testi ) {
-				echo "<strong>" . $random_testi['name'] . "</strong> said:<br/>";
-				echo "<blockquote>" . $random_testi['text'] . "</blockquote>";
-				echo "<small>On " . $random_testi['time'] . "</small>";
+				echo "<strong>" . $random_testi->tName . "</strong> said:<br/>";
+				echo "<blockquote>" . $random_testi->tContent . "</blockquote>";
+				echo "<small>On " . $random_testi->tTime . "</small>";
 			}
 			echo $args['after_widget'];
 		}
