@@ -35,7 +35,7 @@ if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 			$this->load_front_end_assets();
 		}
 
-		function load_front_end_assets() {
+		function front_end_assets_callback() {
 			if ( ! is_admin() ) {
 				wp_enqueue_style( $this->pluginName . ".css", plugin_dir_url( __DIR__ ) . 'assets/css/' . $this->pluginName . '.css', array(), $this->pluginVersion );
 				wp_enqueue_script( $this->pluginName . ".js", plugin_dir_url( __DIR__ ) . 'assets/js/' . $this->pluginName . '.js', array( 'jquery' ), $this->pluginVersion, true );
@@ -44,6 +44,10 @@ if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 					'plugin_name' => $this->pluginName
 				) );
 			}
+		}
+
+		function load_front_end_assets() {
+			add_action( 'wp_enqueue_scripts', array( $this, 'front_end_assets_callback' ) );
 		}
 
 		function load_ajax() {
