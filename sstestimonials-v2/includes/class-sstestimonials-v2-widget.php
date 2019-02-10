@@ -41,10 +41,12 @@ if ( ! class_exists( 'SSTestimonialsV2_Widget' ) ) {
 			echo $args['before_widget'] . $args['before_title'] . $title . $args['after_title'];
 			$ssTestimonialsIO = new SSTestimonialsV2_IO();
 			$random_testi     = $ssTestimonialsIO->get_random();
-			if ( $random_testi ) {
-				echo "<strong>" . $random_testi->tName . "</strong> said:<br/>";
-				echo "<blockquote>" . $random_testi->tContent . "</blockquote>";
-				echo "<small>On " . $random_testi->tTime . "</small>";
+			if ( ! $random_testi->is_error ) {
+				echo "<strong>" . $random_testi->items['name'] . "</strong> said:<br/>";
+				echo "<blockquote>" . $random_testi->items['textt'] . "</blockquote>";
+				echo "<small>On " . $random_testi->items['time'] . "</small>";
+			} else {
+				echo "<i>" . $random_testi->message . "</i>";
 			}
 			echo $args['after_widget'];
 		}

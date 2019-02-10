@@ -14,14 +14,6 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 	class SSTestimonialsV2_IO {
 		protected $tableName;
 
-		public $tId;
-		public $blogId;
-		public $tName;
-		public $tEmail;
-		public $tPhone;
-		public $tContent;
-		public $tTime;
-
 		function __construct() {
 			global $wpdb;
 			$this->tableName = $wpdb->prefix . 'sstestimonials';
@@ -64,21 +56,27 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 
 		//function to display random testimonial
 		function get_random() {
+			$result = new SSTestimonialsV2_Helper();
 			global $wpdb;
 			global $blog_id;
 
 			$random = $wpdb->get_row( 'SELECT * from ' . $this->tableName . ' WHERE blog_id = ' . $blog_id . ' ORDER BY RAND()', ARRAY_A );
 			if ( $random ) {
-				$this->tId      = $random['id'];
-				$this->blogId   = $random['blog_id'];
-				$this->tName    = $random['name'];
-				$this->tEmail   = $random['email'];
-				$this->tPhone   = $random['phone'];
-				$this->tContent = $random['text'];
-				$this->tTime    = $random['time'];
+				$result->is_error = false;
+				$result->items    = array(
+					'id'      => $random['id'],
+					'blog_id' => $random['blog_id'],
+					'time'    => $random['time'],
+					'name'    => $random['name'],
+					'text'    => $random['text'],
+					'phone'   => $random['phone'],
+					'email'   => $random['email']
+				);
+			} else {
+				$result->message = "No data testimonial";
 			}
 
-			return $this;
+			return $result;
 		}
 
 		//function to delete testimonial
