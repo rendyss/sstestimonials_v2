@@ -17,6 +17,35 @@ if ( ! class_exists( 'SSTestimonialsV2_Admin' ) ) {
 		function __construct( $pluginName ) {
 			$this->pluginName = $pluginName;
 			$this->ss_register_admin_page();
+			$this->ss_register_destroy_action();
+		}
+
+		function ss_register_destroy_action() {
+			add_action( 'admin_action_destroy', array( $this, 'ss_destroy_action_callback' ) );
+		}
+
+		function ss_destroy_action_callback() {
+			if ( ! ( isset( $_GET['id'] ) || isset( $_POST['id'] ) || ( isset( $_REQUEST['action'] ) && 'destroy' == $_REQUEST['action'] ) ) ) {
+				wp_die( 'No testimonial to delete has been supplied!' );
+			}
+			$id = ( isset( $_GET['id'] ) ? absint( $_GET['id'] ) : absint( $_POST['id'] ) );
+
+			//If `$id` is provided, then delete it
+			if ( isset( $id ) && $id != null ) {
+				$ssIO   = new SSTestimonialsV2_IO();
+				$delete = $ssIO->delete( $id );
+				if ( ! $delete->is_error ) {
+					wp_redirect( admin_url( 'admin.php?page=' . $this->pluginName ) );
+					exit;
+				} else {
+				    echo "<pre>";
+				    var_dump($delete);
+				    echo "</pre>";
+					wp_die();
+				}
+			} else {
+				wp_die( 'Failed to delete testimonial' );
+			}
 		}
 
 		function ss_register_admin_page() {
