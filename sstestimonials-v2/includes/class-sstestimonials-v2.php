@@ -17,6 +17,12 @@ if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 		function __construct() {
 			$this->pluginName = "sstestimonialsv2";
 			$this->load_helper();
+			$this->load_shortcode();
+		}
+
+		function load_shortcode() {
+			require plugin_dir_path( __FILE__ ) . 'class-sstestimonials-v2-shortcode.php';
+			new SSTestimonialsV2_Shortcode( $this->pluginName );
 		}
 
 		function load_helper() {
