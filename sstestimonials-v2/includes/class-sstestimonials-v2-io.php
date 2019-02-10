@@ -16,7 +16,7 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 
 		function __construct() {
 			global $wpdb;
-			$this->tableName = $wpdb->prefix . 'sstestimonials';
+			$this->tableName = $wpdb->base_prefix . 'sstestimonials';
 		}
 
 		function create_table() {
@@ -73,7 +73,7 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 					'email'   => $random['email']
 				);
 			} else {
-				$result->message = "No data testimonial";
+				$result->message = "No data found";
 			}
 
 			return $result;
@@ -110,8 +110,9 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 		function display() {
 			$result = new SSTestimonialsV2_Helper();
 			global $wpdb;
+			global $blog_id;
 
-			$allTestimonials = $wpdb->get_results( 'SELECT * from ' . $this->tableName, ARRAY_A );
+			$allTestimonials = $wpdb->get_results( 'SELECT * from ' . $this->tableName . ' WHERE blog_id = ' . $blog_id, ARRAY_A );
 			if ( $allTestimonials ) {
 				$result->items    = $allTestimonials;
 				$result->is_error = false;
