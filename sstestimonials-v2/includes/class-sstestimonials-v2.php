@@ -15,6 +15,15 @@ if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 		protected $pluginName;
 		protected $pluginVersion;
 
+		public static function Instance() {
+			static $instance = null;
+			if ( $instance === null ) {
+				$instance = new SSTestimonialsV2();
+			}
+
+			return $instance;
+		}
+
 		function __construct() {
 			$this->pluginName    = "sstestimonialsv2";
 			$this->pluginVersion = "1.0.0";

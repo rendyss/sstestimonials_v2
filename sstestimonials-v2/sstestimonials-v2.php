@@ -24,4 +24,5 @@ register_deactivation_hook( __FILE__, 'deactivate_sstestimonialsv2' );
 //Include the main functions
 require plugin_dir_path( __FILE__ ) . 'includes/class-sstestimonials-v2.php';
 
-$ssTestimonialsV2 = new SSTestimonialsV2();
+//Instance the main class
+$ssTestimonialsV2 = SSTestimonialsV2::Instance();

@@ -39,7 +39,7 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 			$insert = $wpdb->insert( $this->tableName, array(
 				'name'    => $name,
 				'blog_id' => $blog_id,
-				'time'    => current_time( 'mysql' ),
+				'time'    => current_time( 'mysql', true ),
 				'email'   => $email,
 				'phone'   => $phone,
 				'text'    => $content
@@ -60,7 +60,7 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 			global $wpdb;
 			global $blog_id;
 
-			$random = $wpdb->get_row( 'SELECT * from ' . $this->tableName . ' WHERE blog_id = ' . $blog_id . ' ORDER BY RAND()', ARRAY_A );
+			$random = $wpdb->get_row( 'SELECT * from ' . $this->tableName . ' WHERE blog_id = ' . $blog_id . ' ORDER BY RAND() LIMIT 1', ARRAY_A );
 			if ( $random ) {
 				$result->is_error = false;
 				$result->items    = array(
@@ -127,9 +127,9 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 			global $blog_id;
 			global $wpdb;
 
-			$checked_testimonial = $wpdb->get_row( 'SELECT * FROM ' . $this->tableName . ' where id = ' . $testimonial_id, ARRAY_A );
+			$checked_testimonial = $wpdb->get_var( 'SELECT `blog_id` FROM ' . $this->tableName . ' where id = ' . $testimonial_id, ARRAY_A );
 			if ( $checked_testimonial ) {
-				if ( $checked_testimonial['blog_id'] == $blog_id ) {
+				if ( $checked_testimonial == $blog_id ) {
 					$result = true;
 				}
 			}
