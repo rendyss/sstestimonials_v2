@@ -1,0 +1,35 @@
+.ss_alert {
+    padding: 20px;
+    background-color: #cd5134;
+    color: white;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 15px;
+}
+
+.ss_alert.success {
+    background-color: #4ca550;
+}
+
+.ss_alert.info {
+    background-color: #2073c8;
+}
+
+.ss_alert.warning {
+    background-color: #cd7700;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}

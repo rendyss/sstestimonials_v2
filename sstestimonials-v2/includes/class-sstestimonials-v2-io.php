@@ -89,7 +89,7 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 			if ( $testimonial_id ) {
 				//check if `$testimonial_id` belong to current blog_id
 				$is_belong_to_me = $this->is_mine( $testimonial_id );
-				if ( ! $is_belong_to_me->is_error ) {
+				if ( $is_belong_to_me ) {
 					//it's belong to the current blog_id, let's delete it
 					$delete = $wpdb->delete( $this->tableName, array( 'id' => $testimonial_id ) );
 					//check if deletion is success
@@ -97,8 +97,7 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 						$result->is_error = false;
 					}
 				} else {
-					$result = $is_belong_to_me;
-//					$result->message = "Invalid id " . $testimonial_id;
+					$result->message = "Invalid id";
 				}
 			} else {
 				$result->message = "Please provide valid id";

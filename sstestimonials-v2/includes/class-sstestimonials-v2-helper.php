@@ -25,5 +25,21 @@ if ( ! class_exists( 'SSTestimonialsV2_Helper' ) ) {
 			$this->callback = '';
 			$this->other    = array();
 		}
+
+		function get_serialized_val( $objs, $key ) {
+			$result = false;
+			$temres = array();
+			foreach ( $objs as $obj ) {
+				if ( $obj['name'] == $key ) {
+					$temres[] = $obj['value'];
+				}
+			}
+			$countarr = count( $temres );
+			if ( $countarr > 0 ) {
+				$result = count( $temres ) > 1 ? $temres : $temres[0];
+			}
+
+			return $result;
+		}
 	}
 }

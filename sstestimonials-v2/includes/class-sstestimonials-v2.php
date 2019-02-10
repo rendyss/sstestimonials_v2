@@ -13,13 +13,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 	class SSTestimonialsV2 {
 		protected $pluginName;
+		protected $pluginVersion;
 
 		function __construct() {
-			$this->pluginName = "sstestimonialsv2";
+			$this->pluginName    = "sstestimonialsv2";
+			$this->pluginVersion = "1.0.0";
 			$this->load_helper();
 			$this->load_admin_page();
 			$this->load_shortcode();
 			$this->load_widget();
+			$this->load_ajax();
+			$this->load_front_end_assets();
+		}
+
+		function load_front_end_assets() {
+			if ( ! is_admin() ) {
+				wp_enqueue_style( $this->pluginName . ".css", plugin_dir_url( __DIR__ ) . 'assets/css/' . $this->pluginName . '.css', array(), $this->pluginVersion );
+				wp_enqueue_script( $this->pluginName . ".js", plugin_dir_url( __DIR__ ) . 'assets/js/' . $this->pluginName . '.js', array( 'jquery' ), $this->pluginVersion, true );
+				wp_localize_script( $this->pluginName . ".js", 'my_ajax_object', array(
+					'ajax_url'    => admin_url( 'admin-ajax.php' ),
+					'plugin_name' => $this->pluginName
+				) );
+			}
+		}
+
+		function load_ajax() {
+			require plugin_dir_path( __FILE__ ) . 'class-sstestimonials-v2-ajax.php';
+			new SSTestimonialsV2_Ajax( $this->pluginName );
 		}
 
 		function load_admin_page() {

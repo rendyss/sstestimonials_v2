@@ -27,7 +27,7 @@ if ( ! class_exists( 'SSTestimonialsV2_Shortcode' ) ) {
 			$htmlresult = '<div class="parentform">';
 			$htmlresult .= '<div class="ntf"></div>';
 			$htmlresult .= '<form action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" method="post">';
-			$htmlresult .= wp_nonce_field( 'ss_val_nonce', 'ss_form_nonce', true, false );
+			$htmlresult .= wp_nonce_field( 'ss_val_nonce', $this->pluginName . '_nonce', true, false );
 			$htmlresult .= '<p>Name<br/><input type="text" name="' . $this->pluginName . '_name" pattern="[a-zA-Z0-9 ]+" value="" required/></p>';
 			$htmlresult .= '<p>Email<br/>';
 			$htmlresult .= '<input type="email" name="' . $this->pluginName . '_email" value="" required/></p>';
