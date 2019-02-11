@@ -1,20 +1,22 @@
-jQuery(function () {
+var $ = jQuery.noConflict();
+
+$(function () {
 
     //Form submit testimonial clicked
-    jQuery('body').on('click', '.btnsend', function (e) {
+    $('body').on('click', '.btnsend', function (e) {
         e.preventDefault();
-        var btn = jQuery(this),
+        var btn = $(this),
             btnCaption = btn.html(),
-            frm = jQuery(this).closest('form'),
+            frm = $(this).closest('form'),
             parentform = frm.closest('.parentform'),
             notif = parentform.find('.ntf'),
-            dataObj = jQuery(frm).serializeArray(),
-            inputs = jQuery(frm).find('input[type=text], input[type=email], textarea');
+            dataObj = $(frm).serializeArray(),
+            inputs = $(frm).find('input[type=text], input[type=email], textarea');
 
         notif.html('');
         inputs.prop('disabled', true);
         btn.prop("disabled", true).html("Loading...");
-        var ajaxSubmittestimonial = jQuery.ajax({
+        var ajaxSubmittestimonial = $.ajax({
             url: my_ajax_object.ajax_url,
             method: 'POST',
             data: {
@@ -41,7 +43,7 @@ jQuery(function () {
     });
 
     //Function to close notifications
-    jQuery('body').on('click', '.closebtn', function (e) {
+    $('body').on('click', '.closebtn', function (e) {
         var div = this.parentElement;
         div.style.opacity = "0";
         setTimeout(function () {
