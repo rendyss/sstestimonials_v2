@@ -33,10 +33,10 @@ if ( ! class_exists( 'SSTestimonialsV2_Ajax' ) ) {
 			$data   = $_POST['data'];
 			$sdata  = maybe_unserialize( $data );
 			$vnonce = get_serialized_val( $sdata, $this->pluginName . '_nonce' );
-			$vname  = get_serialized_val( $sdata, $this->pluginName . '_name' );
-			$vphone = get_serialized_val( $sdata, $this->pluginName . '_phone' );
-			$vemail = get_serialized_val( $sdata, $this->pluginName . '_email' );
-			$vtesti = get_serialized_val( $sdata, $this->pluginName . '_testi' );
+			$vname  = sanitize_text_field( get_serialized_val( $sdata, $this->pluginName . '_name' ) );
+			$vphone = sanitize_text_field( get_serialized_val( $sdata, $this->pluginName . '_phone' ) );
+			$vemail = sanitize_email( get_serialized_val( $sdata, $this->pluginName . '_email' ) );
+			$vtesti = sanitize_textarea_field( get_serialized_val( $sdata, $this->pluginName . '_testi' ) );
 
 			//Validate nonce
 			if ( wp_verify_nonce( $vnonce, 'ss_val_nonce' ) ) {
