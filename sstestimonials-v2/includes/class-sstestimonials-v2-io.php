@@ -20,50 +20,38 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 		}
 
 		function create_table() {
-			$result = new SSTestimonialsV2_Helper();
 			global $wpdb;
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			$charset_collate = $wpdb->get_charset_collate();
 			$sql             = "CREATE TABLE " . $this->tableName . " (id mediumint(9) NOT NULL AUTO_INCREMENT, blog_id mediumint(9) NOT NULL, time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,name tinytext NOT NULL,text text NOT NULL,phone tinytext NOT NULL,email tinytext NOT NULL,PRIMARY KEY  (id)) $charset_collate;";
-			dbDelta( $sql );
+			$create_table    = dbDelta( $sql );
 
-			return $result;
+			return is_wp_error( $create_table ) ? false : true;
 		}
 
 		//function to insert a new testimonial
-		function insert( $name, $email, $phone, $content ) {
+		function insert( $args ) {
 			global $wpdb;
 			global $blog_id;
 
-			$result = new SSTestimonialsV2_Helper();
-			$insert = $wpdb->insert( $this->tableName, array(
-				'name'    => $name,
-				'blog_id' => $blog_id,
+			$defaults   = array(
 				'time'    => current_time( 'mysql', true ),
-				'email'   => $email,
-				'phone'   => $phone,
-				'text'    => $content
-			) );
-			if ( ! $insert ) {
-				$result->message = "Failed to submit testimonial";
-			} else {
-				$result->message  = "Testimonial submitted successfully";
-				$result->is_error = false;
-			}
+				'blog_id' => $blog_id
+			);
+			$valid_args = wp_parse_args( $args, $defaults );
 
-			return $result;
+			return $wpdb->insert( $this->tableName, $valid_args );
 		}
 
 		//function to display random testimonial
 		function get_random() {
-			$result = new SSTestimonialsV2_Helper();
 			global $wpdb;
 			global $blog_id;
+			$result = array();
 
 			$random = $wpdb->get_row( 'SELECT * from ' . $this->tableName . ' WHERE blog_id = ' . $blog_id . ' ORDER BY RAND() LIMIT 1', ARRAY_A );
 			if ( $random ) {
-				$result->is_error = false;
-				$result->items    = array(
+				$result = array(
 					'id'      => $random['id'],
 					'blog_id' => $random['blog_id'],
 					'time'    => $random['time'],
@@ -72,8 +60,6 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 					'phone'   => $random['phone'],
 					'email'   => $random['email']
 				);
-			} else {
-				$result->message = "No data found";
 			}
 
 			return $result;
@@ -82,59 +68,17 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 		//function to delete testimonial
 		function delete( $testimonial_id ) {
 			global $wpdb;
+			global $blog_id;
 
-			//instance new helper class
-			$result = new SSTestimonialsV2_Helper();
-			//check if `$testimonial_id` is provided
-			if ( $testimonial_id ) {
-				//check if `$testimonial_id` belong to current blog_id
-				$is_belong_to_me = $this->is_mine( $testimonial_id );
-				if ( $is_belong_to_me ) {
-					//it's belong to the current blog_id, let's delete it
-					$delete = $wpdb->delete( $this->tableName, array( 'id' => $testimonial_id ) );
-					//check if deletion is success
-					if ( $delete ) {
-						$result->is_error = false;
-					}
-				} else {
-					$result->message = "Invalid id";
-				}
-			} else {
-				$result->message = "Please provide valid id";
-			}
-
-			return $result;
+			return $wpdb->delete( $this->tableName, array( 'id' => $testimonial_id, 'blog_id' => $blog_id ) );
 		}
 
 		//function to display testimonials
 		function display() {
-			$result = new SSTestimonialsV2_Helper();
 			global $wpdb;
 			global $blog_id;
 
-			$allTestimonials = $wpdb->get_results( 'SELECT * from ' . $this->tableName . ' WHERE blog_id = ' . $blog_id, ARRAY_A );
-			if ( $allTestimonials ) {
-				$result->items    = $allTestimonials;
-				$result->is_error = false;
-			}
-
-			return $result;
-		}
-
-		//function to check wheter the testimonial belongs to current blog_id or not
-		function is_mine( $testimonial_id ) {
-			$result = false;
-			global $blog_id;
-			global $wpdb;
-
-			$checked_testimonial = $wpdb->get_var( 'SELECT `blog_id` FROM ' . $this->tableName . ' where id = ' . $testimonial_id, ARRAY_A );
-			if ( $checked_testimonial ) {
-				if ( $checked_testimonial == $blog_id ) {
-					$result = true;
-				}
-			}
-
-			return $result;
+			return $wpdb->get_results( 'SELECT * from ' . $this->tableName . ' WHERE blog_id = ' . $blog_id, ARRAY_A );
 		}
 	}
 }

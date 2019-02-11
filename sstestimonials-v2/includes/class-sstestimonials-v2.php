@@ -72,7 +72,7 @@ if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 		}
 
 		function load_helper() {
-			require plugin_dir_path( __FILE__ ) . 'class-sstestimonials-v2-helper.php';
+			require plugin_dir_path( __FILE__ ) . 'sstestimonials-functions.php';
 			require plugin_dir_path( __FILE__ ) . 'class-sstestimonials-v2-io.php';
 			require plugin_dir_path( __FILE__ ) . 'class-sstestimonials-v2-template.php';
 		}

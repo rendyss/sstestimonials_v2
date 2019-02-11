@@ -27,8 +27,8 @@ jQuery(function () {
 
         ajaxSubmittestimonial.done(function (data) {
             inputs.prop("disabled", false);
-            var notif_block = data.is_error ? "ss_alert warning" : "ss_alert success";
-            if (!data.is_error) {
+            var notif_block = !data.success ? "ss_alert warning" : "ss_alert success";
+            if (data.success) {
                 inputs.val('');
             }
             notif.html("<div class=\"" + notif_block + "\"><span class=\"closebtn\">&times;</span> " + data.message + "</div>");

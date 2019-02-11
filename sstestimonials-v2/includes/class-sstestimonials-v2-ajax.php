@@ -14,6 +14,9 @@ if ( ! class_exists( 'SSTestimonialsV2_Ajax' ) ) {
 	class SSTestimonialsV2_Ajax {
 		protected $pluginName;
 
+		public $success = false;
+		public $message;
+
 		function __construct( $pluginName ) {
 			$this->pluginName = $pluginName;
 			$this->ss_register_ajax();
@@ -26,28 +29,33 @@ if ( ! class_exists( 'SSTestimonialsV2_Ajax' ) ) {
 
 		//function to save testimonial through ajax
 		function ss_save_callback() {
-			$result = new SSTestimonialsV2_Helper();
 			//Assign posted data into variables
 			$data   = $_POST['data'];
 			$sdata  = maybe_unserialize( $data );
-			$vnonce = $result->get_serialized_val( $sdata, $this->pluginName . '_nonce' );
-			$vname  = $result->get_serialized_val( $sdata, $this->pluginName . '_name' );
-			$vphone = $result->get_serialized_val( $sdata, $this->pluginName . '_phone' );
-			$vemail = $result->get_serialized_val( $sdata, $this->pluginName . '_email' );
-			$vtesti = $result->get_serialized_val( $sdata, $this->pluginName . '_testi' );
+			$vnonce = get_serialized_val( $sdata, $this->pluginName . '_nonce' );
+			$vname  = get_serialized_val( $sdata, $this->pluginName . '_name' );
+			$vphone = get_serialized_val( $sdata, $this->pluginName . '_phone' );
+			$vemail = get_serialized_val( $sdata, $this->pluginName . '_email' );
+			$vtesti = get_serialized_val( $sdata, $this->pluginName . '_testi' );
 
 			//Validate nonce
 			if ( wp_verify_nonce( $vnonce, 'ss_val_nonce' ) ) {
 				if ( $vname && $vphone && $vemail && $vtesti ) {
-					$ssIO   = new SSTestimonialsV2_IO();
-					$result = $ssIO->insert( $vname, $vemail, $vphone, $vtesti );
+					$ssIO          = new SSTestimonialsV2_IO();
+					$insert        = $ssIO->insert( array(
+						'name'  => $vname,
+						'email' => $vemail,
+						'phone' => $vphone,
+						'text'  => $vtesti
+					) );
+					$this->success = $insert;
 				} else {
-					$result->message = "All fields are required";
+					$this->message = "All fields are required";
 				}
 			} else {
-				$result->message = "Failed to submit testimonial";
+				$this->message = "Failed to submit testimonial";
 			}
-			wp_send_json( $result );
+			wp_send_json( $this );
 		}
 
 	}

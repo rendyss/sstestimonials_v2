@@ -34,11 +34,11 @@ if ( ! class_exists( 'SSTestimonialsV2_Admin' ) ) {
 			if ( isset( $id ) && $id != null ) {
 				$ssIO   = new SSTestimonialsV2_IO();
 				$delete = $ssIO->delete( $id );
-				if ( ! $delete->is_error ) {
+				if ( $delete ) {
 					wp_redirect( admin_url( 'admin.php?page=' . $this->pluginName ) );
 					exit;
 				} else {
-					wp_die($delete->message);
+					wp_die( "Failed to delete testimonial" );
 				}
 			} else {
 				wp_die( 'Failed to delete testimonial' );

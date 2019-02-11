@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="parentform">
     <div class="ntf"></div>
     <form action="#" method="post">
-		<?php wp_nonce_field( 'ss_val_nonce', $prefix . '_nonce', true, false ); ?>
+		<?php echo wp_nonce_field( 'ss_val_nonce', $prefix . '_nonce', true, false ); ?>
         <p>Name<br/>
             <input type="text" name="<?php echo $prefix; ?>_name" pattern="[a-zA-Z0-9 ]+" value="" required/>
         </p>

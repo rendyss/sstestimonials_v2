@@ -40,7 +40,7 @@ if ( ! class_exists( 'SSTestimonialsV2_AdminTable' ) ) {
 			$hidden                = array();
 			$sortable              = array();
 			$this->_column_headers = array( $columns, $hidden, $sortable );
-			$this->items           = $show_testimonials->items;
+			$this->items           = $show_testimonials;
 			$per_page              = 10;
 			$current_page          = $this->get_pagenum();
 			$total_items           = count( $this->items );
