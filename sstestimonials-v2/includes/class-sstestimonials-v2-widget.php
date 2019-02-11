@@ -39,12 +39,15 @@ if ( ! class_exists( 'SSTestimonialsV2_Widget' ) ) {
 			$title = apply_filters( 'widget_title', $instance['title'] );
 
 			echo $args['before_widget'] . $args['before_title'] . $title . $args['after_title'];
-			$ssTestimonialsIO = new SSTestimonialsV2_IO();
-			$random_testi     = $ssTestimonialsIO->get_random();
+			$ssTestimonialsIO       = new SSTestimonialsV2_IO();
+			$ssTestimonialsTemplate = new SSTestimonialsV2_Template( plugin_dir_path( dirname( __FILE__ ) ) . 'templates' );
+			$random_testi           = $ssTestimonialsIO->get_random();
 			if ( $random_testi ) {
-				echo "<strong>" . $random_testi['name'] . "</strong> said:<br/>";
-				echo "<blockquote>" . $random_testi['text'] . "</blockquote>";
-				echo "<small>On " . $random_testi['time'] . "</small>";
+				echo $ssTestimonialsTemplate->render( 'sstestimonials-v2-front-layout', array(
+					'name' => $random_testi['name'],
+					'text' => $random_testi['text'],
+					'time' => $random_testi['time']
+				) );
 			} else {
 				echo "<i>Data not found</i>";
 			}
