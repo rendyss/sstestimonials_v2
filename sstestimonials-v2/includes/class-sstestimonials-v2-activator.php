@@ -19,8 +19,13 @@ if ( ! class_exists( 'SSTestimonialsV2_Activator' ) ) {
 			$ssTestimonialsIO = new SSTestimonialsV2_IO();
 			$create_table     = $ssTestimonialsIO->create_table();
 			//insert dummy testimonials for initial installation
-			$insert = $ssTestimonialsIO->insert( 'Rendy', 'rendi@softwareseni.com', '082219186349', 'Hi there, this is just a dummy testimonial, have fun :)' );
-
+			$insert = $ssTestimonialsIO->insert( array(
+					'name'  => 'Rendy',
+					'email' => 'rendi@softwareseni.com',
+					'phone' => '082219186349',
+					'text'  => 'Hi there, this is just a dummy testimonial, have fun :)'
+				)
+			);
 		}
 	}
 }

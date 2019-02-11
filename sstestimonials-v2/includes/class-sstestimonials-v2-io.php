@@ -35,6 +35,7 @@ if ( ! class_exists( 'SSTestimonialsV2_IO' ) ) {
 			global $blog_id;
 
 			$defaults   = array(
+				'name'    => 'Anonymous',
 				'time'    => current_time( 'mysql', true ),
 				'blog_id' => $blog_id
 			);

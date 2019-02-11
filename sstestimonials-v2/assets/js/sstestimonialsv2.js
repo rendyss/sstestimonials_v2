@@ -38,7 +38,8 @@ $(function () {
         });
 
         ajaxSubmittestimonial.fail(function (data) {
-            inputs.prop("disabled", false);
+            notif.html("<div class=\"ss_alert\"><span class=\"closebtn\">&times;</span> " + data.message + "</div>");
+            inputs.prop("disabled", false).html(btnCaption);
         })
     });
 
