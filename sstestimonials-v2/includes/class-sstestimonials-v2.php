@@ -24,7 +24,7 @@ if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 			return $instance;
 		}
 
-		function __construct() {
+		private function __construct() {
 			$this->pluginName    = "sstestimonialsv2";
 			$this->pluginVersion = "1.0.0";
 			$this->load_helper();
