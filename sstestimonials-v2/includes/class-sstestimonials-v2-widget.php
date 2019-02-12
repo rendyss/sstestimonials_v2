@@ -23,16 +23,6 @@ if ( ! class_exists( 'SSTestimonialsV2_Widget' ) ) {
 				'description' => 'This is a super simple widget to display random testimonials',
 			);
 			parent::__construct( $this->widgetName, 'Random Testimonial', $widget_options );
-
-			$this->ss_register_widget();
-		}
-
-		function ss_register_widget() {
-			add_action( 'widgets_init', array( $this, 'ss_widget_callback' ) );
-		}
-
-		function ss_widget_callback() {
-			register_widget( $this );
 		}
 
 		public function widget( $args, $instance ) {

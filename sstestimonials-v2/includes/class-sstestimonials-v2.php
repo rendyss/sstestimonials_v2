@@ -30,7 +30,7 @@ if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 			$this->load_helper();
 			$this->load_admin_page();
 			$this->load_shortcode();
-			$this->load_widget();
+			$this->register_widget();
 			$this->load_ajax();
 			$this->load_front_end_assets();
 		}
@@ -66,9 +66,14 @@ if ( ! class_exists( 'SSTestimonialsV2' ) ) {
 			new SSTestimonialsV2_Shortcode( $this->pluginName );
 		}
 
-		function load_widget() {
+		function register_widget() {
+			add_action( 'widgets_init', array( $this, 'widget_callback' ) );
+		}
+
+		function widget_callback() {
 			require plugin_dir_path( __FILE__ ) . 'class-sstestimonials-v2-widget.php';
-			new SSTestimonialsV2_Widget( $this->pluginName );
+			$ssTestimonialsWidget = new SSTestimonialsV2_Widget( $this->pluginName );
+			register_widget( $ssTestimonialsWidget );
 		}
 
 		function load_helper() {
